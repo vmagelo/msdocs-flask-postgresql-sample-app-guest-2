@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/d825e98a-2820-412d-8960-05d03b33da65/resourceGroups/msdocs-python-flask-vmagelo/providers/Microsoft.Web/sites/msdocs-python-flask-vmagelo",
+    "appService.deploySubpath": "."
+}
