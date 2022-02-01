@@ -1,6 +1,5 @@
-import os
-from azure.identity import DefaultAzureCredential, VisualStudioCodeCredential
-from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient, __version__
+from azure.identity import DefaultAzureCredential
+from azure.storage.blob import ContainerClient, __version__
 
 from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for
@@ -23,10 +22,8 @@ def hello():
    container_client = ContainerClient(account_url=storage_url, container_name=container_name, credential=credential)
 
    try:
-      # List the blobs in the container
-      blob_list= container_client.list_blobs()
       bloblist = ''
-      for blob in blob_list:
+      for blob in container_client.list_blobs():
          bloblist += blob.name + ' '
 
    except Exception as ex:

@@ -8,6 +8,7 @@ from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient, _
 from azure.storage.blob import BlobClient
 
 ## Easiest
+# https://github.com/Azure/azure-sdk-for-net/issues/13228
 credential = DefaultAzureCredential(exclude_shared_token_cache_credential=True)
 
 # Who is making this request
