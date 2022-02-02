@@ -18,6 +18,9 @@ credential = DefaultAzureCredential(exclude_shared_token_cache_credential=True)
 #print(subscription.subscription_id)
 #print(subscription.display_name)
 
+# Docs
+# https://docs.microsoft.com/en-us/azure/app-service/scenario-secure-app-access-storage?tabs=azure-portal%2Cprogramming-language-csharp
+
 # Retrieve the storage blob service URL, which is of the form
 # https://pythonsdkstorage12345.blob.core.windows.net/
 storage_url = 'https://msdocspythonflaskvmagelo.blob.core.windows.net'
