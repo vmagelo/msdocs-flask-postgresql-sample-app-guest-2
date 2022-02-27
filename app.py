@@ -1,38 +1,61 @@
 from flask import Flask, render_template, request, redirect, url_for
-from datetime import datetime
-from dotenv import load_dotenv
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 import os
 
-from config.development import DATABASES
+#from config.development import DATABASES
 
 app = Flask(__name__)
 
 # WEBSITE_HOSTNAME exists only in production environment
 if not 'WEBSITE_HOSTNAME' in os.environ:
    # local development, where we'll use environment variables
-   print("Loading config.development and environment variables from .env file")
+   print("Loading config.development and environment variables from .env file.")
    app.config.from_object('config.development')
 else:
    # production
+   print("Loading config.production.")
    app.config.from_object('config.production')
 
+print('DATABASE_URI = ' + str(app.config.get('DATABASE_URI')))
+app.config.update(
+    SQLALCHEMY_DATABASE_URI=app.config.get('DATABASE_URI'),
+    SQLALCHEMY_TRACK_MODIFICATIONS=False,
+)
+
+# initialize the database connection
+db = SQLAlchemy(app)
+from models import Guest
+db.create_all()
+db.session.commit()
+
+# initialize database migration management
+migrate = Migrate(app, db)
+
 @app.route('/')
-def index():
-   print('Request for index page received')
-   return render_template('index.html')
+def view_registered_guests():
+    from models import Guest
+    guests = Guest.query.all()
+    return render_template('guest_list.html', guests=guests)
 
 
-@app.route('/hello', methods=['POST'])
-def hello():
-   name = request.form.get('name')
+@app.route('/register', methods=['GET'])
+def view_registration_form():
+    return render_template('guest_registration.html')
 
-   if name:
-       print('Request for hello page received with name=%s' % name)
-       return render_template('hello.html', name = name)
-   else:
-       print('Request for hello page received with no name or blank name -- redirecting')
-       return redirect(url_for('index'))
 
+@app.route('/register', methods=['POST'])
+def register_guest():
+    from models import Guest
+    name = request.form.get('name')
+    email = request.form.get('email')
+
+    guest = Guest(name, email)
+    db.session.add(guest)
+    db.session.commit()
+
+    return render_template(
+        'guest_confirmation.html', name=name, email=email)
 
 if __name__ == '__main__':
    app.run()

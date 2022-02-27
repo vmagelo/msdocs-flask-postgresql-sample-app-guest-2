@@ -1,4 +1,7 @@
 Flask
+Flask-Migrate
+Flask-SQLAlchemy
 psycopg2
 python-dotenv
 whitenoise
+SQLAlchemy
