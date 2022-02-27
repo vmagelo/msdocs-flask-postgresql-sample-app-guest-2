@@ -4,7 +4,7 @@ from sqlalchemy.dialects.postgresql import JSON
 class Guest(db.Model):
     """Simple database model to track event attendees."""
 
-    __tablename__ = 'guests2'
+    __tablename__ = 'guests3'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80))
     email = db.Column(db.String(120))
